@@ -1,4 +1,4 @@
-﻿namespace FSharp.ProjectTemplate
+namespace Delegate.Sandbox
 
 /// Documentation for my library
 ///

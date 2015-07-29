@@ -10,8 +10,8 @@ Introducing your project
 Say more
 
 *)
-#r "FSharp.ProjectScaffold.dll"
-open FSharp.ProjectScaffold
+#r "Delegate.Sandbox.dll"
+open Delegate.Sandbox
 
 Library.hello 0
 (**

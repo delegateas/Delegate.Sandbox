@@ -1,6 +1,6 @@
-﻿module FSharp.ProjectScaffold.Tests
+module Delegate.Sandbox.Tests
 
-open FSharp.ProjectTemplate
+open Delegate.Sandbox
 open NUnit.Framework
 
 [<Test>]

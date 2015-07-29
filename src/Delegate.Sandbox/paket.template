@@ -1,0 +1,23 @@
+type project
+owners
+    Delegate A/S
+authors 
+    Ramón Soto Mathiesen
+projectUrl
+    http://github.com/delegateas/Delegate.Sandbox
+iconUrl
+    https://raw.githubusercontent.com/delegateas/Delegate.Sandbox/master/docs/files/img/logo.png
+licenseUrl
+    http://github.com/delegateas/Delegate.Sandbox/blob/master/LICENSE.txt
+requireLicenseAcceptance
+    false
+copyright
+    Copyright 2015
+tags
+    fsharp side-effects sandbox in out io
+summary
+    A library that provides a Computation Expression named Sandbox Builder, sandbox { return 42 }, which ensures that values returned from the computation are I/O side-effects safe and if not, they are marked as unsafe returning an exception.
+description
+    A library that provides a Computation Expression named Sandbox Builder, sandbox { return 42 }, which ensures that values returned from the computation are I/O side-effects safe and if not, they are marked as unsafe returning an exception.
+
+

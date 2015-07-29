@@ -11,17 +11,17 @@
 // (This is the original behaviour of ProjectScaffold prior to multi project support)
 let referenceBinaries = []
 // Web site location for the generated documentation
-let website = "/##ProjectName##"
+let website = "/Delegate.Sandbox"
 
-let githubLink = "http://github.com/##GitHome##/##GitName##"
+let githubLink = "http://github.com/delegateas/Sandbox"
 
 // Specify more information about your project
 let info =
-  [ "project-name", "##ProjectName##"
-    "project-author", "##Author##"
-    "project-summary", "##Summary##"
+  [ "project-name", "Delegate.Sandbox"
+    "project-author", "Ramón Soto Mathiesen"
+    "project-summary", "A library that provides a Computation Expression named Sandbox Builder, sandbox { return 42 }, which ensures that values returned from the computation are I/O side-effects safe and if not, they are marked as unsafe returning an exception."
     "project-github", githubLink
-    "project-nuget", "http://nuget.org/packages/##ProjectName##" ]
+    "project-nuget", "http://nuget.org/packages/Delegate.Sandbox" ]
 
 // --------------------------------------------------------------------------------------
 // For typical project, no changes are needed below
