@@ -9,8 +9,8 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Delegate.Sandbox</RootNamespace>
     <AssemblyName>Delegate.Sandbox</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFSharpCoreVersion>4.3.0.0</TargetFSharpCoreVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFSharpCoreVersion>4.3.1.0</TargetFSharpCoreVersion>
     <Name>Delegate.Sandbox</Name>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -22,7 +22,8 @@
     <OutputPath>.\bin\Debug</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <WarningLevel>3</WarningLevel>
-    <DocumentationFile>.\bin\Debug\Delegate.Sandbox.xml</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <OtherFlags>--warnon:1182</OtherFlags>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -45,7 +46,7 @@
     <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Library.fs" />
+    <Compile Include="Sandbox.fs" />
     <None Include="paket.references" />
     <None Include="paket.template" />
   </ItemGroup>

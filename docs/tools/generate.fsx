@@ -13,7 +13,7 @@ let referenceBinaries = []
 // Web site location for the generated documentation
 let website = "/Delegate.Sandbox"
 
-let githubLink = "http://github.com/delegateas/Sandbox"
+let githubLink = "http://github.com/delegateas/Delegate.Sandbox"
 
 // Specify more information about your project
 let info =
