@@ -217,7 +217,7 @@ redistribution for both commercial and non-commercial purposes. For more informa
   [appdomain]: https://msdn.microsoft.com/en-us/library/system.appdomain(v=vs.110).aspx
   [sandbox]: https://msdn.microsoft.com/en-us/library/bb763046(v=vs.110).aspx
   [wlaschin]: https://gist.github.com/swlaschin/54cfff886669ccab895a
-  [gh]: https://github.com/Delegate.Sandbox
-  [issues]: https://github.com/Delegate.Sandbox/issues
-  [license]: https://github.com/Delegate.Sandbox/blob/master/LICENSE.md
+  [gh]: https://github.com/delegateas/Delegate.Sandbox
+  [issues]: https://github.com/delegateas/Delegate.Sandbox/issues
+  [license]: https://github.com/delegateas/Delegate.Sandbox/blob/master/LICENSE.md
 *)
