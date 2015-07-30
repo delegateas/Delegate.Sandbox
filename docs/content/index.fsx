@@ -84,8 +84,8 @@ Prints only 'IOSafe FooBar': IOSafe FooBar
 The next example show how we try to get access to the current file directory,
 count the amount of files and add it to the final result. This action will try 
 to perform an `File IO` which is not allowed in the `sandbox`. Due to this, the
-whole function is evaluated to an `Unsafe` value, whichs contain the `Exception` 
-throwed at runtime: *)
+whole function is evaluated to an `Unsafe` value, which contain the `Exception` 
+thrown at runtime: *)
 
 let addition' x y = sandbox{ 
   return (Directory.EnumerateFiles(".") |> Seq.length) + x + y }
@@ -161,7 +161,7 @@ How it works and limitations
 ----------------------------
 
  * A few words on the `SandboxBuilder` works:
-    - The library is build on top of the [AppDomain Class][appdomain] which 
+    - The library is built on top of the [AppDomain Class][appdomain] which 
       allows to [Run Partially Trusted Code in a Sandbox][sandbox]. The 
       `SandboxBuilder` is only allowed to execute code
       `(SecurityPermissionFlag.Execution)`, which is the minimum permission that
@@ -172,7 +172,7 @@ How it works and limitations
       (`Delay : f:(unit -> 'a IOEffect) -> 'a IOEffect`), which tries to evaluate
       the function at the newly created domain (`AppDomain`) with the minimum
       granted permision instead of the executing `AppDomain.CurrentDomain`.
-      If the function evaluation is succesful then an `IOSafe 'a` value is returned, 
+      If the function evaluation is successful then an `IOSafe 'a` value is returned, 
       otherwise an `Unsafe` `Exception` is returned.
     - In order to ensure that `IOEffect` types are only instantiated from inside
       the computation expression, a few examples: `IOSafe "42"` or 
@@ -195,7 +195,7 @@ How it works and limitations
       in the `AppDomain`.
     - **Unit tests**: As stated before, `Reflection` is not supported and because NUnit 
       uses this approach to execute the test, then it will not work either. This makes
-      it really difficult to test code, specially because `Unsafe` types are 
+      it really difficult to test code, mostly because `Unsafe` types are 
       runtime and not compile time.
     - **F# Interactive (fsiAnyCpu.exe)**: As the computation expression is built on 
       top of the `AppDomain`, it will not be possible to use this library in
