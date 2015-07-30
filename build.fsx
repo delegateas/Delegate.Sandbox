@@ -31,17 +31,17 @@ let project = "Delegate.Sandbox"
 
 // Short summary of the project
 // (used as description in AssemblyInfo and as a short summary for NuGet package)
-let summary = "A library that provides a Computation Expression named Sandbox Builder, sandbox { return 42 }, which ensures that values returned from the computation are I/O side-effects safe and if not, they are marked as unsafe returning an exception."
+let summary = "Delegate.Sandbox is library that provides I/O side-effects safe code by using a sandbox computation expression."
 
 // Longer description of the project
 // (used as a description for NuGet package; line breaks are automatically cleaned up)
-let description = "A library that provides a Computation Expression named Sandbox Builder, sandbox { return 42 }, which ensures that values returned from the computation are I/O side-effects safe and if not, they are marked as unsafe returning an exception."
+let description = "A library that provides a Computation Expression named SandboxBuilder, sandbox { return 42 }, which ensures that values returned from the computation are I/O side-effects safe and if not, they are marked as unsafe returning an exception."
 
 // List of author names (for NuGet package)
-let authors = [ "Ramón Soto Mathiesen" ]
+let authors = [ "Delegate A/S"; "Ramón Soto Mathiesen" ]
 
 // Tags for your project (for NuGet package)
-let tags = "fsharp side-effects sandbox in out io"
+let tags = "fsharp side-effects safe in out io sandbox"
 
 // File system information 
 let solutionFile  = "Delegate.Sandbox.sln"
@@ -55,10 +55,17 @@ let gitOwner = "delegateas"
 let gitHome = "https://github.com/" + gitOwner
 
 // The name of the project on GitHub
-let gitName = "Sandbox"
+let gitName = "Delegate.Sandbox"
 
 // The url for the raw files hosted
 let gitRaw = environVarOrDefault "gitRaw" "https://raw.github.com/delegateas"
+
+// The profile where the docs project is posted 
+let docsGitHome = "https://github.com/delegateas"
+// The name of the project on GitHub
+let docsGitName = "delegateas.github.io"
+// The name of the subfolder
+let docsGitSubName = "Delegate.Sandbox"
 
 // --------------------------------------------------------------------------------------
 // END TODO: The rest of the file includes standard build steps
@@ -168,7 +175,8 @@ Target "NuGet" (fun _ ->
         { p with
             OutputPath = "bin"
             Version = release.NugetVersion
-            ReleaseNotes = toLines release.Notes})
+            ReleaseNotes = toLines release.Notes
+            })
 )
 
 Target "PublishNuget" (fun _ ->
@@ -207,8 +215,8 @@ Target "GenerateHelp" (fun _ ->
     Rename "docs/content/release-notes.md" "docs/content/RELEASE_NOTES.md"
 
     DeleteFile "docs/content/license.md"
-    CopyFile "docs/content/" "LICENSE.txt"
-    Rename "docs/content/license.md" "docs/content/LICENSE.txt"
+    CopyFile "docs/content/" "LICENSE.md"
+    Rename "docs/content/license.md" "docs/content/LICENSE.md"
 
     generateHelp true
 )
@@ -219,8 +227,8 @@ Target "GenerateHelpDebug" (fun _ ->
     Rename "docs/content/release-notes.md" "docs/content/RELEASE_NOTES.md"
 
     DeleteFile "docs/content/license.md"
-    CopyFile "docs/content/" "LICENSE.txt"
-    Rename "docs/content/license.md" "docs/content/LICENSE.txt"
+    CopyFile "docs/content/" "LICENSE.md"
+    Rename "docs/content/license.md" "docs/content/LICENSE.md"
 
     generateHelp' true true
 )
@@ -282,14 +290,29 @@ Target "AddLangDocs" (fun _ ->
 // --------------------------------------------------------------------------------------
 // Release Scripts
 
-Target "ReleaseDocs" (fun _ ->
-    let tempDocsDir = "temp/gh-pages"
-    CleanDir tempDocsDir
-    Repository.cloneSingleBranch "" (gitHome + "/" + gitName + ".git") "gh-pages" tempDocsDir
+//Target "ReleaseDocs" (fun _ ->
+//    let tempDocsDir = "temp/gh-pages"
+//    CleanDir tempDocsDir
+//    Repository.cloneSingleBranch "" (gitHome + "/" + gitName + ".git") "gh-pages" tempDocsDir
+//
+//    CopyRecursive "docs/output" tempDocsDir true |> tracefn "%A"
+//    StageAll tempDocsDir
+//    Git.Commit.Commit tempDocsDir (sprintf "Update generated documentation for version %s" release.NugetVersion)
+//    Branches.push tempDocsDir
+//)
 
-    CopyRecursive "docs/output" tempDocsDir true |> tracefn "%A"
-    StageAll tempDocsDir
-    Git.Commit.Commit tempDocsDir (sprintf "Update generated documentation for version %s" release.NugetVersion)
+Target "ReleaseDocs" (fun _ ->
+    let tempDocsDir = "temp/docs"
+    let tempDocsSubDir = tempDocsDir @@ docsGitSubName
+    CleanDir tempDocsDir
+    Repository.cloneSingleBranch "" (docsGitHome + "/" + docsGitName + ".git") 
+      "master" tempDocsDir
+    fullclean tempDocsSubDir
+    CopyRecursive "docs/output" tempDocsSubDir true |> tracefn "%A"
+    StageAll tempDocsSubDir
+    Git.Commit.Commit tempDocsSubDir
+      (sprintf "Update generated documentation for version %s"
+        release.NugetVersion)
     Branches.push tempDocsDir
 )
 

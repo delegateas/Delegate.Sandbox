@@ -19,7 +19,7 @@ let githubLink = "http://github.com/delegateas/Delegate.Sandbox"
 let info =
   [ "project-name", "Delegate.Sandbox"
     "project-author", "Ramón Soto Mathiesen"
-    "project-summary", "A library that provides a Computation Expression named Sandbox Builder, sandbox { return 42 }, which ensures that values returned from the computation are I/O side-effects safe and if not, they are marked as unsafe returning an exception."
+    "project-summary", "Delegate.Sandbox is library that provides I/O side-effects safe code by using a sandbox computation expression."
     "project-page", "http://delegateas.github.io/"
     "project-github", githubLink
     "project-nuget", "http://nuget.org/packages/Delegate.Sandbox" ]
