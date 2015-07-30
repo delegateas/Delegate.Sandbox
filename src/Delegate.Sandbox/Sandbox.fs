@@ -1,14 +1,7 @@
 namespace Delegate.Sandbox
 
-/// Documentation for my library
-///
-/// ## Example
-///
-///     let h = Library.hello 1
-///     printfn "%d" h
-///
 [<AutoOpen>]
-module Sandbox = 
+module GlobalValues = 
   open System
   open System.IO
   open System.Reflection
@@ -29,7 +22,7 @@ module Sandbox =
     let defaultValue x = function | IOSafe s -> s | Unsafe _ -> x
 
   [<Sealed>]
-  type RemoveConsoleInOutEffects() = 
+  type private RemoveConsoleInOutEffects() = 
     inherit MarshalByRefObject()
     do 
       Console.SetIn(new StreamReader(Stream.Null))
@@ -56,10 +49,6 @@ module Sandbox =
 
   let private assemblyLocation t = Assembly.GetAssembly(t).Location
 
-  /// Returns 42
-  ///
-  /// ## Parameters
-  ///  - `num` - whatever
   let sandbox =
     let ads = AppDomainSetup()
     do ads.ApplicationBase <- dirName (appBase ())
