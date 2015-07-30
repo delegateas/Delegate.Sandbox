@@ -219,5 +219,5 @@ redistribution for both commercial and non-commercial purposes. For more informa
   [wlaschin]: https://gist.github.com/swlaschin/54cfff886669ccab895a
   [gh]: https://github.com/delegateas/Delegate.Sandbox
   [issues]: https://github.com/delegateas/Delegate.Sandbox/issues
-  [license]: https://github.com/delegateas/Delegate.Sandbox/blob/master/LICENSE.md
+  [license]: https://github.com/delegateas/Delegate.Sandbox/blob/sync/LICENSE.md
 *)
