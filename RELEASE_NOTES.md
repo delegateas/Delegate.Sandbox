@@ -1,5 +1,6 @@
 ### 1.5.0.0 - July 30 2015
 * Major code refactoring (less code, more awesome)
+* Fixed critical security permission issue (unmanaged code could be invoked in sanbox)
 * Fixed issue with No code optmization in Release mode
 * Fixed issue with Unit tests. See Delegate.Sandbox.Tests project
 * Added support for nested sandboxes. Ex: sandbox{ return sandbox{ return 42 } }
