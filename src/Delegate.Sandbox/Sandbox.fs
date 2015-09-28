@@ -58,7 +58,7 @@ module GlobalValues =
           AppDomain.CurrentDomain.Evidence,
           AppDomain.CurrentDomain.SetupInformation,
           permissionSet)
-      // Most likely not theadsafe but it's always the same value which is set
+      // Most likely not theadsafe but it's always the same value so ...
       do sandboxDomain'.SetData("domain", sandboxDomain' :> obj)
       do sandboxDomain'.SetData("typeof", sandboxType' :> obj)
 

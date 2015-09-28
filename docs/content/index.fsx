@@ -3,6 +3,7 @@
 // it to define helpers that you do not want to show in the documentation.
 #I "../../bin"
 #I "../../bin/Delegate.Sandbox"
+#r "Delegate.Sandbox.dll"
 
 (**
 Delegate.Sandbox
@@ -39,8 +40,6 @@ The following example shows that even though there is a call to `printfn`, the
 output is not passed to the console and hereby, no side-effect is generated:
 
 *)
-
-#r "Delegate.Sandbox.dll"
 
 open System
 open System.IO
@@ -165,13 +164,13 @@ How it works and limitations
       allows to [Run Partially Trusted Code in a Sandbox][sandbox]. The 
       `SandboxBuilder` is only allowed to execute code
       `(SecurityPermissionFlag.Execution)`, which is the minimum permission that
-      can be granted.
+      can be granted ([Principle of least privilege][leastprivilege]).
     - `sandbox` is implemented as a computation expression that only implements  
       **return** (`Return : v:'b -> 'b IOEffect`), which ensures that values 
       returning from the computation are of the desired value type, and **delay** 
       (`Delay : f:(unit -> 'a IOEffect) -> 'a IOEffect`), which tries to evaluate
       the function at the newly created domain (`AppDomain`) with the minimum
-      granted permision instead of the executing `AppDomain.CurrentDomain`.
+      granted permission instead of the executing `AppDomain.CurrentDomain`.
       If the function evaluation is successful then an `IOSafe 'a` value is returned, 
       otherwise an `Unsafe` `Exception` is returned.
     - In order to ensure that `IOEffect` types are only instantiated from inside
@@ -185,11 +184,11 @@ How it works and limitations
       the `System.Console.SetIn`, `System.Console.SetOut` and `System.Console.SetError`
       are set to `Stream.Null`. Once this task is performed, the 
       `SecurityPermissionFlag.UnmanagedCode` flag is removed in order for the 
-      new `AppDomain` runs with the minimal permision possible.
+      new `AppDomain` runs with the minimal permission possible.
     - For more information, please look into the code (about +80 lines) at [GitHub][gh]
 
  * We describe a few **limitations** we found while we were making the library:
-    - **No code optmization**: When a project that refers to the library is built in
+    - **No code optimization**: When a project that refers to the library is built in
       `Release` mode, default is set to `Optimize code`, then it will not work as
       some of the code is transformed to use `Reflection` which is not supported
       in the `AppDomain`.
@@ -215,6 +214,7 @@ redistribution for both commercial and non-commercial purposes. For more informa
 [License file][license] in the GitHub repository. 
 
   [appdomain]: https://msdn.microsoft.com/en-us/library/system.appdomain(v=vs.110).aspx
+  [leastprivilege]: https://en.wikipedia.org/wiki/Principle_of_least_privilege
   [sandbox]: https://msdn.microsoft.com/en-us/library/bb763046(v=vs.110).aspx
   [wlaschin]: https://gist.github.com/swlaschin/54cfff886669ccab895a
   [gh]: https://github.com/delegateas/Delegate.Sandbox
