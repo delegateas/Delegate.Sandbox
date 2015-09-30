@@ -4,9 +4,6 @@ open System
 open Delegate.Sandbox
 open NUnit.Framework
 
-let inline (>>=) m f = IOEffect.bind f m
-let inline (|==) m x = IOEffect.defaultValue x m
-
 [<Test>]
 let ``Very basic test`` () =
   let result = sandbox{ return 21 + 21 }

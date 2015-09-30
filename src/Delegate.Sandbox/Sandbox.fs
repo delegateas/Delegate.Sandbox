@@ -22,6 +22,7 @@ module GlobalValues =
     let defaultValue x = function | IOSafe s -> s | Unsafe _ -> x
 
   let inline (>>=) m f = IOEffect.bind f m
+  let inline (|==) m x = IOEffect.defaultValue x m
 
   [<Sealed>]
   type private RemoveConsoleIO() = 

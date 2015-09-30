@@ -1,3 +1,6 @@
+### 1.5.0.1 - Sep 30 2015
+* Added AssemblyInfo to the library (no file version)
+
 ### 1.5.0.0 - July 30 2015
 * Major code refactoring (less code, more awesomeness)
 * Fixed critical security permission issue (unmanaged code could be invoked in sandbox)
