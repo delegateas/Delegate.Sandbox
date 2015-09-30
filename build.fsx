@@ -40,6 +40,10 @@ let description = "A library that provides a Computation Expression named Sandbo
 // List of author names (for NuGet package)
 let authors = [ "Delegate A/S"; "Ramón Soto Mathiesen" ]
 
+// Company and copyright information
+let company = "Delegate"
+let copyright = @"Copyleft (ɔ) Delegate A/S 2015"
+
 // Tags for your project (for NuGet package)
 let tags = "fsharp side-effects safe in out io sandbox"
 
@@ -88,6 +92,8 @@ Target "AssemblyInfo" (fun _ ->
         [ Attribute.Title (projectName)
           Attribute.Product project
           Attribute.Description summary
+          Attribute.Company company
+          Attribute.Copyright copyright
           Attribute.Version release.AssemblyVersion
           Attribute.FileVersion release.AssemblyVersion ]
 

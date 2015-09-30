@@ -21,8 +21,11 @@ module GlobalValues =
     let bind f = function | IOSafe s -> f s | Unsafe u -> Unsafe u
     let defaultValue x = function | IOSafe s -> s | Unsafe _ -> x
 
+  let inline (>>=) m f = IOEffect.bind f m
+  let inline (|==) m x = IOEffect.defaultValue x m
+
   [<Sealed>]
-  type private RemoveConsoleInOutEffects() = 
+  type private RemoveConsoleIO() = 
     inherit MarshalByRefObject()
     do 
       Console.SetIn(new StreamReader(Stream.Null))
@@ -33,55 +36,40 @@ module GlobalValues =
   type SandboxBuilder() = 
     inherit MarshalByRefObject()
     member x.Return v = IOSafe v
+    [<SecurityPermissionAttribute(SecurityAction.PermitOnly, Execution = true)>]
     member x.Delay f = try f() with ex -> Unsafe ex
   
-  let private appBase () = 
-    AppDomain.CurrentDomain.SetupInformation.ApplicationBase
+  let private sandboxDomain,sandboxType =
+    match AppDomain.CurrentDomain.GetData("domain"),
+          AppDomain.CurrentDomain.GetData("typeof") with
+    | null,_ | _,null ->
+      let sandboxType' = typeof<SandboxBuilder>
+      let consoleType' = typeof<RemoveConsoleIO>
 
-  let private strongName (assembly : Assembly) = 
-    let an = assembly.GetName()
-    let pb = StrongNamePublicKeyBlob(an.GetPublicKey())
-    StrongName(pb, an.Name, an.Version)
+      let permissionSet = PermissionSet(PermissionState.None)
+      let securityPermission =
+        SecurityPermission(
+            SecurityPermissionFlag.UnmanagedCode ||| 
+            SecurityPermissionFlag.Execution)
+      do permissionSet.AddPermission(securityPermission) |> ignore
 
-  let private dirName x = Path.GetDirectoryName(x)
+      let sandboxDomain' = 
+        AppDomain.CreateDomain(
+          "Sandbox_" + Guid.NewGuid().ToString(),
+          AppDomain.CurrentDomain.Evidence,
+          AppDomain.CurrentDomain.SetupInformation,
+          permissionSet)
+      // Most likely not theadsafe but it's always the same value so ...
+      do sandboxDomain'.SetData("domain", sandboxDomain' :> obj)
+      do sandboxDomain'.SetData("typeof", sandboxType' :> obj)
 
-  let private fileName x = Path.GetFileName(x)
+      sandboxDomain'.CreateInstanceAndUnwrap(
+        consoleType'.Assembly.FullName, consoleType'.FullName)
+          :?> RemoveConsoleIO |> ignore
 
-  let private assemblyLocation t = Assembly.GetAssembly(t).Location
+      sandboxDomain',sandboxType'
+    | domain,``typeof`` -> domain :?> AppDomain, ``typeof`` :?> Type
 
   let sandbox =
-    let ads = AppDomainSetup()
-    do ads.ApplicationBase <- dirName (appBase ())
-
-    let ps = PermissionSet(PermissionState.None)
-    let fps =
-        SecurityPermission(
-            SecurityPermissionFlag.Execution ||| 
-            SecurityPermissionFlag.UnmanagedCode)
-    do ps.AddPermission(fps) |> ignore
-
-    let nd = 
-        AppDomain.CreateDomain(
-            "Sandbox_" + Guid.NewGuid().ToString(), 
-            AppDomain.CurrentDomain.Evidence,
-            ads, ps, [| strongName (typedefof<SandboxBuilder>.Assembly); |])
-
-    // Execute UnmanagedCode in order to remove Console I/O side-effects
-    Activator
-        .CreateInstanceFrom(
-            nd,
-            fileName(assemblyLocation typedefof<RemoveConsoleInOutEffects>),
-            typedefof<RemoveConsoleInOutEffects>.FullName)
-        .Unwrap() :?> RemoveConsoleInOutEffects |> ignore
-
-    // Remove UnmanagedCode permission before instantiating the sandbox builder
-    nd.PermissionSet.RemovePermission(typedefof<SecurityPermission>) |> ignore
-    let lps = SecurityPermission(SecurityPermissionFlag.Execution)
-    do ps.AddPermission(lps) |> ignore
-
-    Activator
-        .CreateInstanceFrom(
-            nd,
-            fileName(assemblyLocation typedefof<SandboxBuilder>),
-            typedefof<SandboxBuilder>.FullName)
-        .Unwrap() :?> SandboxBuilder
+    sandboxDomain.CreateInstanceAndUnwrap(
+      sandboxType.Assembly.FullName, sandboxType.FullName) :?> SandboxBuilder
